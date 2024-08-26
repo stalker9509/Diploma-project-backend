@@ -18,12 +18,9 @@ func (handler *Handler) InitRout() *gin.Engine {
 
 	auth := rout.Group("/auth")
 	{
-		auth.POST("/sign-up")
-		auth.POST("/sign-in")
+		auth.POST("/sign-up", handler.signUp)
+		auth.POST("/sign-in", handler.signIn)
 	}
-	/*api :=rout.Group("/api")
-	{
-	}*/
 
 	return rout
 }
