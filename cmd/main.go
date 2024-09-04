@@ -35,7 +35,7 @@ func main() {
 	repository := repository.NewRepository(db)
 	service := service.NewService(repository)
 	handler := handler.NewHandler(service)
-	server := server.NewServer(handler.InitRout(), viper.GetString("server.port"))
+	server := server.NewServer(handler.InitRout(), viper.GetString("server"))
 
 	go func() {
 		err := server.Run()

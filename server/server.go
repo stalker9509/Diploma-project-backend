@@ -24,11 +24,11 @@ type Server struct {
 	httpServer *http.Server
 }
 
-func NewServer(handler http.Handler, port string) *Server {
+func NewServer(handler http.Handler, server string) *Server {
 	corsHandler := CORS(handler)
 
 	return &Server{httpServer: &http.Server{
-		Addr:         ":" + port,
+		Addr:         server,
 		Handler:      corsHandler,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
