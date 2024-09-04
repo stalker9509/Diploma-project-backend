@@ -3,6 +3,7 @@ package repository
 import (
 	"Diploma-project-backend/internal/model"
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -14,25 +15,26 @@ func NewAuthPostgres(db *sqlx.DB) *AuthPostgres {
 	return &AuthPostgres{db: db}
 }
 
-func (r *AuthPostgres) CreateUser(user model.Users) (int, error) {
-	var id int
+func (r *AuthPostgres) CreateUser(user model.Users) (string, error) {
+	user.ID = uuid.NewString()
+	var id string
 	var isProfessor = user.IsProfessor
 
 	if isProfessor {
-		query := fmt.Sprintf("INSERT INTO %s (firstname, lastname, patronymic, email, password, jobtitle, imageavatar) values ($1, $2, $3, $4, $5, $6, $7) RETURNING id", professorTable)
+		query := fmt.Sprintf("INSERT INTO %s (id, firstname, lastname, patronymic, email, password, jobtitle, imageavatar) values ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id", professorTable)
 
-		row := r.db.QueryRow(query, user.FirstName, user.LastName, user.Patronymic, user.Email, user.Password, user.JobTitle, user.ImageAvatar)
+		row := r.db.QueryRow(query, user.ID, user.FirstName, user.LastName, user.Patronymic, user.Email, user.Password, user.JobTitle, user.ImageAvatar)
 		if err := row.Scan(&id); err != nil {
-			return 0, err
+			return "", err
 		}
 
 		return id, nil
 	} else {
-		query := fmt.Sprintf("INSERT INTO %s (firstname, lastname, patronymic, email, password, enrollment, graduation, groupid, imageavatar) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id", studentsTable)
+		query := fmt.Sprintf("INSERT INTO %s (id, firstname, lastname, patronymic, email, password, enrollment, graduation, groupid, imageavatar) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id", studentsTable)
 
-		row := r.db.QueryRow(query, user.FirstName, user.LastName, user.Patronymic, user.Email, user.Password, user.Enrollment, user.Graduation, user.GroupId, user.ImageAvatar)
+		row := r.db.QueryRow(query, user.ID, user.FirstName, user.LastName, user.Patronymic, user.Email, user.Password, user.Enrollment, user.Graduation, user.GroupId, user.ImageAvatar)
 		if err := row.Scan(&id); err != nil {
-			return 0, err
+			return "", err
 		}
 
 		return id, nil
