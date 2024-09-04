@@ -16,19 +16,32 @@ func NewAuthPostgres(db *sqlx.DB) *AuthPostgres {
 
 func (r *AuthPostgres) CreateUser(user model.Users) (int, error) {
 	var id int
-	query := fmt.Sprintf("INSERT INTO %s (firstname, lastname, patronymic, email, password, imageavatar) values ($1, $2, $3, $4, $5, $6) RETURNING id", usersTable)
+	var isProfessor = user.IsProfessor
 
-	row := r.db.QueryRow(query, user.FirstName, user.LastName, user.Patronymic, user.Email, user.Password, user.ImageAvatar)
-	if err := row.Scan(&id); err != nil {
-		return 0, err
+	if isProfessor {
+		query := fmt.Sprintf("INSERT INTO %s (firstname, lastname, patronymic, email, password, jobtitle, imageavatar) values ($1, $2, $3, $4, $5, $6, $7) RETURNING id", professorTable)
+
+		row := r.db.QueryRow(query, user.FirstName, user.LastName, user.Patronymic, user.Email, user.Password, user.JobTitle, user.ImageAvatar)
+		if err := row.Scan(&id); err != nil {
+			return 0, err
+		}
+
+		return id, nil
+	} else {
+		query := fmt.Sprintf("INSERT INTO %s (firstname, lastname, patronymic, email, password, enrollment, graduation, groupid, imageavatar) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id", studentsTable)
+
+		row := r.db.QueryRow(query, user.FirstName, user.LastName, user.Patronymic, user.Email, user.Password, user.Enrollment, user.Graduation, user.GroupId, user.ImageAvatar)
+		if err := row.Scan(&id); err != nil {
+			return 0, err
+		}
+
+		return id, nil
 	}
-
-	return id, nil
 }
 
 func (r *AuthPostgres) GetUser(email, password string) (model.Users, error) {
 	var user model.Users
-	query := fmt.Sprintf("SELECT id FROM %s WHERE email=$1 AND password=$2", usersTable)
+	query := fmt.Sprintf("SELECT id FROM %s WHERE email=$1 AND password=$2", studentsTable)
 	err := r.db.Get(&user, query, email, password)
 
 	return user, err
