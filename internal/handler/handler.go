@@ -20,6 +20,7 @@ func (handler *Handler) InitRout() *gin.Engine {
 	{
 		auth.POST("/sign-up", handler.signUp)
 		auth.POST("/sign-in", handler.signIn)
+		auth.POST("/update-user", handler.updateUser)
 	}
 
 	return rout

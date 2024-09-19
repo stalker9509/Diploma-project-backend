@@ -57,3 +57,7 @@ func (r *AuthPostgres) GetUser(email, password string) (model.Users, error) {
 
 	return user, err
 }
+
+func (r *AuthPostgres) UpdateUser(user model.Users) (string, error) {
+	return "", nil
+}

@@ -9,6 +9,10 @@ type AuthService struct {
 	repository repository.Authorization
 }
 
+func (auth *AuthService) UpdateUser(user model.Users) (string, error) {
+	return auth.repository.UpdateUser(user)
+}
+
 func NewAuthService(repository repository.Authorization) *AuthService {
 	return &AuthService{repository: repository}
 }
