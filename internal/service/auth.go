@@ -12,7 +12,8 @@ type AuthService struct {
 func NewAuthService(repository repository.Authorization) *AuthService {
 	return &AuthService{repository: repository}
 }
-func (auth *AuthService) CreateUser(user model.Users) (int, error) {
+
+func (auth *AuthService) CreateUser(user model.Users) (string, error) {
 	return auth.repository.CreateUser(user)
 }
 
