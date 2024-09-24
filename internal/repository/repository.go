@@ -9,6 +9,7 @@ type Authorization interface {
 	CreateUser(user model.Users) (string, error)
 	GetUser(email, password string) (model.Users, error)
 	UpdateUser(user model.Users) (string, error)
+	DeleteUser(id string, isProfessor bool) error
 }
 
 type Repository struct {

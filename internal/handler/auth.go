@@ -67,3 +67,22 @@ func (handler *Handler) signIn(c *gin.Context) {
 		"id": id,
 	})
 }
+
+type deleteUser struct {
+	ID          string `json:"id" binding:"required"`
+	IsProfessor bool   `json: "IsProfessor" binding:"required"`
+}
+
+func (handler *Handler) deleteUser(c *gin.Context) {
+	var user deleteUser
+	if err := c.BindJSON(&user); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
+		return
+	}
+
+	err := handler.service.Authorization.DeleteUser(user.ID, user.IsProfessor)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+}
