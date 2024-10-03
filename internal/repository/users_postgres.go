@@ -7,15 +7,15 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type AuthPostgres struct {
+type UsersPostgres struct {
 	db *sqlx.DB
 }
 
-func NewAuthPostgres(db *sqlx.DB) *AuthPostgres {
-	return &AuthPostgres{db: db}
+func NewUsersPostgres(db *sqlx.DB) *UsersPostgres {
+	return &UsersPostgres{db: db}
 }
 
-func (r *AuthPostgres) CreateUser(user model.Users) (string, error) {
+func (r *UsersPostgres) CreateUser(user model.Users) (string, error) {
 	user.ID = uuid.NewString()
 	var id string
 	var isProfessor = user.IsProfessor
@@ -41,7 +41,7 @@ func (r *AuthPostgres) CreateUser(user model.Users) (string, error) {
 	}
 }
 
-func (r *AuthPostgres) GetUser(email, password string) (model.Users, error) {
+func (r *UsersPostgres) GetUser(email, password string) (model.Users, error) {
 	var user model.Users
 	query := fmt.Sprintf(`
     SELECT * FROM %s WHERE email=$1 AND password=$2
@@ -54,7 +54,7 @@ func (r *AuthPostgres) GetUser(email, password string) (model.Users, error) {
 	return user, err
 }
 
-func (r *AuthPostgres) UpdateUser(user model.Users) (string, error) {
+func (r *UsersPostgres) UpdateUser(user model.Users) (string, error) {
 	var id string
 	var isProfessor = user.IsProfessor
 
@@ -87,7 +87,7 @@ func (r *AuthPostgres) UpdateUser(user model.Users) (string, error) {
 	}
 }
 
-func (r *AuthPostgres) DeleteUser(id string, isProfessor bool) error {
+func (r *UsersPostgres) DeleteUser(id string, isProfessor bool) error {
 	if isProfessor {
 		query := fmt.Sprintf(`DELETE FROM %s WHERE id = $1`, professorTable)
 		_, err := r.db.Exec(query, id)

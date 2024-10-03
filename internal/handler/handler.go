@@ -16,12 +16,12 @@ func NewHandler(service *service.Service) *Handler {
 func (handler *Handler) InitRout() *gin.Engine {
 	rout := gin.New()
 
-	auth := rout.Group("/auth")
+	users := rout.Group("/users")
 	{
-		auth.POST("/sign-up", handler.signUp)
-		auth.POST("/sign-in", handler.signIn)
-		auth.POST("/update-user", handler.updateUser)
-		auth.POST("/delete-user", handler.deleteUser)
+		users.POST("/sign-up", handler.signUp)
+		users.POST("/sign-in", handler.signIn)
+		users.POST("/update-user", handler.updateUser)
+		users.POST("/delete-user", handler.deleteUser)
 	}
 
 	return rout

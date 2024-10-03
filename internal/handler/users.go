@@ -14,7 +14,7 @@ func (handler *Handler) signUp(c *gin.Context) {
 		return
 	}
 
-	id, err := handler.service.Authorization.CreateUser(input)
+	id, err := handler.service.Users.CreateUser(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -33,7 +33,7 @@ func (handler *Handler) updateUser(c *gin.Context) {
 		return
 	}
 
-	id, err := handler.service.Authorization.UpdateUser(input)
+	id, err := handler.service.Users.UpdateUser(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -57,7 +57,7 @@ func (handler *Handler) signIn(c *gin.Context) {
 		return
 	}
 
-	id, err := handler.service.Authorization.GetUser(input.Email, input.Password)
+	id, err := handler.service.Users.GetUser(input.Email, input.Password)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -80,7 +80,7 @@ func (handler *Handler) deleteUser(c *gin.Context) {
 		return
 	}
 
-	err := handler.service.Authorization.DeleteUser(user.ID, user.IsProfessor)
+	err := handler.service.Users.DeleteUser(user.ID, user.IsProfessor)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

@@ -5,7 +5,7 @@ import (
 	"Diploma-project-backend/internal/repository"
 )
 
-type Authorization interface {
+type Users interface {
 	CreateUser(user model.Users) (string, error)
 	GetUser(email, password string) (model.Users, error)
 	UpdateUser(user model.Users) (string, error)
@@ -13,11 +13,11 @@ type Authorization interface {
 }
 
 type Service struct {
-	Authorization
+	Users
 }
 
 func NewService(repository *repository.Repository) *Service {
 	return &Service{
-		Authorization: NewAuthService(repository.Authorization),
+		Users: NewUsersService(repository.Users),
 	}
 }
