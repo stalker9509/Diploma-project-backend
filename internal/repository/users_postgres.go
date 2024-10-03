@@ -44,9 +44,13 @@ func (r *UsersPostgres) CreateUser(user model.Users) (string, error) {
 func (r *UsersPostgres) GetUser(email, password string) (model.Users, error) {
 	var user model.Users
 	query := fmt.Sprintf(`
-    SELECT * FROM %s WHERE email=$1 AND password=$2
+    SELECT 'professor' AS user_type, id, firstname, lastname, patronymic, email, password, jobtitle AS extra_info
+    FROM %s
+    WHERE email=$1 AND password=$2
     UNION
-    SELECT * FROM %s WHERE email=$1 AND password=$2
+    SELECT 'student' AS user_type, id, firstname, lastname, patronymic, email, password, CONCAT(enrollment, ' - ', graduation) AS extra_info
+    FROM %s
+    WHERE email=$1 AND password=$2;
 	`, professorTable, studentsTable)
 
 	err := r.db.Get(&user, query, email, password)
