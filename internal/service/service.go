@@ -12,12 +12,21 @@ type Users interface {
 	DeleteUser(id string, isProfessor bool) error
 }
 
+type Group interface {
+	CreateGroup(group model.Group) (string, error)
+	GetGroup(id string) (model.Group, error)
+	UpdateGroup(group model.Group) (string, error)
+	DeleteGroup(id string) error
+}
+
 type Service struct {
 	Users
+	Group
 }
 
 func NewService(repository *repository.Repository) *Service {
 	return &Service{
 		Users: NewUsersService(repository.Users),
+		Group: NewGroupService(repository.Group),
 	}
 }

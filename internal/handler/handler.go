@@ -24,5 +24,13 @@ func (handler *Handler) InitRout() *gin.Engine {
 		users.POST("/delete-user", handler.deleteUser)
 	}
 
+	group := rout.Group("/group")
+	{
+		users.POST("/add-group", handler.addGroup)
+		users.POST("/get-group", handler.getGroup)
+		users.POST("/update-group", handler.updateGroup)
+		users.POST("/delete-group", handler.deleteGroup)
+	}
+
 	return rout
 }

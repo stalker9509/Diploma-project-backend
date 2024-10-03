@@ -12,12 +12,21 @@ type Users interface {
 	DeleteUser(id string, isProfessor bool) error
 }
 
+type Group interface {
+	CreateGroup(group model.Group) (string, error)
+	GetGroup(id string) (model.Group, error)
+	UpdateGroup(group model.Group) (string, error)
+	DeleteGroup(id string) error
+}
+
 type Repository struct {
 	Users
+	Group
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Users: NewUsersPostgres(db),
+		Group: NewGroupPostgres(db),
 	}
 }
