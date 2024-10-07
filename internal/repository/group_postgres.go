@@ -39,6 +39,15 @@ func (r *GroupPostgres) GetGroup(id string) (model.Group, error) {
 	return group, err
 }
 
+func (r *GroupPostgres) GetAllGroups() ([]model.Group, error) {
+	var group []model.Group
+	query := fmt.Sprintf(" SELECT * FROM %s", groupTable)
+
+	err := r.db.Get(&group, query)
+
+	return group, err
+}
+
 func (r *GroupPostgres) UpdateGroup(group model.Group) (string, error) {
 	var id string
 

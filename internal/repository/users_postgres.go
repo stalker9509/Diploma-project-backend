@@ -32,7 +32,7 @@ func (r *UsersPostgres) CreateUser(user model.Users) (string, error) {
 	} else {
 		query := fmt.Sprintf("INSERT INTO %s (id, firstName, lastName, patronymic, email, password, enrollment, graduation, groupid, imageavatar) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id", studentsTable)
 
-		row := r.db.QueryRow(query, user.ID, user.FirstName, user.LastName, user.Patronymic, user.Email, user.Password, user.Enrollment, user.Graduation, user.GroupId, user.ImageAvatar)
+		row := r.db.QueryRow(query, user.ID, user.FirstName, user.LastName, user.Patronymic, user.Email, user.Password, "user.Enrollment", "user.Graduation", user.GroupId, user.ImageAvatar)
 		if err := row.Scan(&id); err != nil {
 			return "", err
 		}
@@ -44,10 +44,10 @@ func (r *UsersPostgres) CreateUser(user model.Users) (string, error) {
 func (r *UsersPostgres) GetUser(email, password string) (model.Users, error) {
 	var user model.Users
 	query := fmt.Sprintf(`
-    SELECT * FROM %s WHERE email=$1 AND password=$2
-    UNION
-    SELECT * FROM %s WHERE email=$1 AND password=$2
-	`, professorTable, studentsTable)
+    SELECT 'professor' AS id, firstname, lastname, patronymic, email, password, jobtitle
+    FROM %s
+    WHERE email=$1 AND password=$2
+	`, professorTable)
 
 	err := r.db.Get(&user, query, email, password)
 

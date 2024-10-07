@@ -26,10 +26,11 @@ func (handler *Handler) InitRout() *gin.Engine {
 
 	group := rout.Group("/group")
 	{
-		users.POST("/add-group", handler.addGroup)
-		users.POST("/get-group", handler.getGroup)
-		users.POST("/update-group", handler.updateGroup)
-		users.POST("/delete-group", handler.deleteGroup)
+		group.POST("/add-group", handler.addGroup)
+		group.POST("/get-group", handler.getGroup)
+		group.POST("/get-all-groups", handler.getAllGroups)
+		group.POST("/update-group", handler.updateGroup)
+		group.POST("/delete-group", handler.deleteGroup)
 	}
 
 	return rout

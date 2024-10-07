@@ -13,18 +13,22 @@ func NewGroupService(repository repository.Group) *GroupService {
 	return &GroupService{repository: repository}
 }
 
-func (group *GroupService) CreateGroup(group model.Group) (string, error) {
-	return group.repository.CreateGroup(group)
+func (g *GroupService) CreateGroup(group model.Group) (string, error) {
+	return g.repository.CreateGroup(group)
 }
 
-func (group *GroupService) GetGroup(id string) (model.Group, error) {
-	return group.repository.GetGroup(id)
+func (g *GroupService) GetGroup(id string) (model.Group, error) {
+	return g.repository.GetGroup(id)
 }
 
-func (group *GroupService) UpdateGroup(id model.Group) (string, error) {
-	return group.repository.UpdateGroup(id)
+func (g *GroupService) GetAllGroups() ([]model.Group, error) {
+	return g.repository.GetAllGroups()
 }
 
-func (group *GroupService) DeleteGroup(id string) error {
-	return group.repository.DeleteGroup(id)
+func (g *GroupService) UpdateGroup(id model.Group) (string, error) {
+	return g.repository.UpdateGroup(id)
+}
+
+func (g *GroupService) DeleteGroup(id string) error {
+	return g.repository.DeleteGroup(id)
 }

@@ -15,6 +15,7 @@ type Users interface {
 type Group interface {
 	CreateGroup(group model.Group) (string, error)
 	GetGroup(id string) (model.Group, error)
+	GetAllGroups() ([]model.Group, error)
 	UpdateGroup(group model.Group) (string, error)
 	DeleteGroup(id string) error
 }

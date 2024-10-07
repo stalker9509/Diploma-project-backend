@@ -1,8 +1,8 @@
 package model
 
 type Group struct {
-	ID        string `json:"ID" `
-	Name      string `json:"Name" binding:"required" `
-	Curator   string `json:"Curator" binding:"required" `
-	Timetable string `json:"Timetable" `
+	ID        string `json:"id" `
+	Name      string `json:"name" binding:"required" `
+	Curator   string `json:"curator" binding:"required" `
+	Timetable string `json:"timetable" `
 }

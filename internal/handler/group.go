@@ -48,6 +48,18 @@ func (handler *Handler) getGroup(c *gin.Context) {
 	})
 }
 
+func (handler *Handler) getAllGroups(c *gin.Context) {
+	id, err := handler.service.Group.GetAllGroups()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": id,
+	})
+}
+
 func (handler *Handler) updateGroup(c *gin.Context) {
 	var input model.Group
 
